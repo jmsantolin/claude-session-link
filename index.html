@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Ouverture dans Claude</title>
+<style>
+:root{--bg:#faf9f5;--fg:#141413;--mute:#73726c;color-scheme:light dark}
+@media (prefers-color-scheme:dark){:root{--bg:#262624;--fg:#faf9f5;--mute:#9c9a92}}
+body{margin:0;min-height:100vh;display:grid;place-items:center;background:var(--bg);color:var(--fg);font:14px/20px ui-sans-serif,-apple-system,BlinkMacSystemFont,sans-serif;padding:16px;box-sizing:border-box;text-align:center}
+a{color:inherit}
+p{margin:6px 0}.m{color:var(--mute);font-size:13px}
+</style>
+</head>
+<body>
+<main>
+<p id="msg">Ouverture de la session dans Claude…</p>
+<p class="m" id="sub">Si rien ne se passe, <a id="go" href="#">clique ici</a>. Tu peux ensuite fermer cet onglet.</p>
+</main>
+<script>
+// Relais : un artefact ne peut pas ouvrir claude://…/epitaxy/<id> ; cette page le fait.
+// L'id voyage après le #, il n'est jamais envoyé au serveur.
+var id = decodeURIComponent(location.hash.slice(1));
+if (/^local_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(id)) {
+  var url = "claude://claude.ai/epitaxy/" + id;
+  document.getElementById("go").href = url;
+  location.href = url;
+} else {
+  document.getElementById("msg").textContent = "Lien de session invalide.";
+  document.getElementById("sub").textContent = "Il manque l'identifiant de la session après le #.";
+}
+</script>
+</body>
+</html>
